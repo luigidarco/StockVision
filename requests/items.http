@@ -1,0 +1,31 @@
+@baseUrl = http://localhost:8080
+@itemId = 1
+
+### List items
+GET {{baseUrl}}/api/items
+
+### Create item
+POST {{baseUrl}}/api/items
+Content-Type: application/json
+
+{
+  "name": "",
+  "description": "Wireless keyboard",
+  "quantity": 10
+}
+
+### Get item
+GET {{baseUrl}}/api/items/{{itemId}}
+
+### Update item
+PUT {{baseUrl}}/api/items/{{itemId}}
+Content-Type: application/json
+
+{
+  "name": "Updated keyboard",
+  "description": "Mechanical keyboard",
+  "quantity": 5
+}
+
+### Delete item
+DELETE {{baseUrl}}/api/items/{{itemId}}
