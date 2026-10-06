@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -21,13 +22,18 @@ import java.util.List;
 @RequestMapping("/api/items")
 public class ItemController {
     private final ItemRepository itemRepository;
+    private final EnvironmentProfileRepository environmentProfileRepository;
 
-    public ItemController(ItemRepository itemRepository) {
+    public ItemController(ItemRepository itemRepository, EnvironmentProfileRepository environmentProfileRepository) {
         this.itemRepository = itemRepository;
+        this.environmentProfileRepository = environmentProfileRepository;
     }
 
     @GetMapping
-    public List<Item> getAll() {
+    public List<Item> getAll(@RequestParam(required = false) Long environmentId) {
+        if (environmentId != null) {
+            return itemRepository.findByEnvironmentProfileId(environmentId);
+        }
         return itemRepository.findAll();
     }
 
@@ -38,6 +44,7 @@ public class ItemController {
 
     @PostMapping
     public ResponseEntity<Item> create(@Valid @RequestBody Item item) {
+        attachEnvironment(item);
         Item savedItem = itemRepository.save(item);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -52,6 +59,11 @@ public class ItemController {
         existingItem.setName(item.getName());
         existingItem.setDescription(item.getDescription());
         existingItem.setQuantity(item.getQuantity());
+        existingItem.setBrand(item.getBrand());
+        existingItem.setCategoryLabel(item.getCategoryLabel());
+        existingItem.setRoomLocation(item.getRoomLocation());
+        existingItem.setEnvironmentProfile(resolveEnvironment(item.getEnvironmentProfile()));
+        existingItem.setSubItems(item.getSubItems());
         return itemRepository.save(existingItem);
     }
 
@@ -64,5 +76,17 @@ public class ItemController {
     private Item findItem(Long id) {
         return itemRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found"));
+    }
+
+    private void attachEnvironment(Item item) {
+        item.setEnvironmentProfile(resolveEnvironment(item.getEnvironmentProfile()));
+    }
+
+    private EnvironmentProfile resolveEnvironment(EnvironmentProfile profile) {
+        if (profile == null || profile.getId() == null) {
+            return null;
+        }
+        return environmentProfileRepository.findById(profile.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Environment not found"));
     }
 }

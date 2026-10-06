@@ -9,9 +9,22 @@ POST {{baseUrl}}/api/items
 Content-Type: application/json
 
 {
-  "name": "",
+  "name": "Teclado sem fio",
+  "brand": "Acme",
+  "categoryLabel": "Eletrônicos",
+  "roomLocation": "Escritório",
   "description": "Wireless keyboard",
-  "quantity": 10
+  "quantity": 10,
+  "environmentProfile": {
+    "id": 1
+  },
+  "subItems": [
+    {
+      "sequence": 1,
+      "description": "Receptor USB",
+      "quantity": 1
+    }
+  ]
 }
 
 ### Get item
@@ -23,8 +36,15 @@ Content-Type: application/json
 
 {
   "name": "Updated keyboard",
+  "brand": "Acme",
+  "categoryLabel": "Eletrônicos",
+  "roomLocation": "Escritório",
   "description": "Mechanical keyboard",
-  "quantity": 5
+  "quantity": 5,
+  "environmentProfile": {
+    "id": 1
+  },
+  "subItems": []
 }
 
 ### Delete item

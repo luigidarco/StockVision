@@ -1,0 +1,24 @@
+{
+  "name": "stockvision-frontend",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@heroui/react": "2.8.10",
+    "@heroui/theme": "2.4.26",
+    "lucide-react": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "latest",
+    "@tailwindcss/vite": "latest",
+    "tailwindcss": "^4.1.14",
+    "vite": "latest"
+  }
+}

@@ -1,0 +1,14 @@
+@baseUrl = http://localhost:8080
+@userId = 1
+
+### List environments for the development user
+GET {{baseUrl}}/api/users/{{userId}}/environments
+
+### Create a work environment
+POST {{baseUrl}}/api/users/{{userId}}/environments
+Content-Type: application/json
+
+{
+  "name": "Estúdio",
+  "type": "WORK"
+}
