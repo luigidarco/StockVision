@@ -75,7 +75,7 @@ public class ItemController {
 
     private Item findItem(Long id) {
         return itemRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Item não encontrado."));
     }
 
     private void attachEnvironment(Item item) {
@@ -87,6 +87,6 @@ public class ItemController {
             return null;
         }
         return environmentProfileRepository.findById(profile.getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Environment not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ambiente não encontrado."));
     }
 }
